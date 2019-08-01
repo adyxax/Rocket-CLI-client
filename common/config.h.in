@@ -1,0 +1,9 @@
+#ifndef COMMON_CONFIG_H_
+#define COMMON_CONFIG_H_
+
+#define CONFIG_DIR "@CMAKE_INSTALL_PREFIX@/etc/rocket-cli-client/"
+#define CONFIG_PATH CONFIG_DIR "rocket.conf"
+#define VERSION "@PROJECT_VERSION@"
+#define GIT_HASH "@GIT_HASH@"
+
+#endif
