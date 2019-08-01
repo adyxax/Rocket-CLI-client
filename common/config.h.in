@@ -6,4 +6,12 @@
 #define VERSION "@PROJECT_VERSION@"
 #define GIT_HASH "@GIT_HASH@"
 
+#define DEFAULT_WEB_URL "http://localhost:3000/"
+#define DEFAULT_WSS_URL "ws://localhost:3000/websocket"
+
+char config_load(const char *config_file);
+const char * config_get_web_url(void);
+const char * config_get_wss_url(void);
+void config_clean(void);
+
 #endif
