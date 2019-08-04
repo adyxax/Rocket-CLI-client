@@ -1,5 +1,5 @@
-#ifndef _UTIL_H_
-#define _UTIL_H_
+#ifndef COMMON_UTIL_H_
+#define COMMON_UTIL_H_
 
 #include <features.h>
 #include <time.h>

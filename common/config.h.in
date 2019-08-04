@@ -12,6 +12,8 @@
 char config_load(const char *config_file);
 const char * config_get_web_url(void);
 const char * config_get_wss_url(void);
+const char * config_get_login(void);
+const char * config_get_password(void);
 void config_clean(void);
 
 #endif

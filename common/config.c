@@ -48,6 +48,24 @@ const char * config_get_wss_url(void)
     return url;
 }
 
+const char * config_get_login(void)
+{
+    const char * login;
+    if (config_lookup_string(config, "login", &login) != CONFIG_TRUE) {
+        return NULL;
+    }
+    return login;
+}
+
+const char * config_get_password(void)
+{
+    const char * password;
+    if (config_lookup_string(config, "password", &password) != CONFIG_TRUE) {
+        return NULL;
+    }
+    return password;
+}
+
 void config_clean(void)
 {
     if (config != NULL) {
