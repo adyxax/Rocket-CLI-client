@@ -60,6 +60,7 @@ restapi_login(const char* username, const char* password)
         printf("userid: %s\nauthtoken: %s\n", userId->valuestring, authToken->valuestring);
         http_add_header("X-User-Id", userId->valuestring);
         http_add_header("X-Auth-Token", authToken->valuestring);
+        http_add_header("Content-type", "application/json");
     } else {
         const cJSON* msg = cJSON_GetObjectItemCaseSensitive(json, "message");
         if (cJSON_IsString(msg) && msg->valuestring != NULL)

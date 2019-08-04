@@ -22,7 +22,6 @@ restapi_im_close(const char* username)
     strcpy(login_args, LOGIN_ARG_PRE);
     strcpy(login_args + pre_len, username);
     strcpy(login_args + pre_len + user_len, LOGIN_ARG_POST);
-    http_add_header("Content-type", "application/json");
     const char* buffer = http_post("/api/v1/im.close", login_args);
     free(login_args);
 

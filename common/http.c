@@ -53,6 +53,9 @@ void http_clean(void)
 
 const char * http_get(const char* path)
 {
+    curl_easy_reset(curl);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
+
     curl_easy_setopt(curl, CURLOPT_POST, 0);
     return http_perform(path, NULL);
 }
@@ -80,9 +83,6 @@ const char * http_perform(const char* path, const char* postfields)
         buffer_fill = 0;
     }
 
-    curl_easy_reset(curl);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
-
     const char * weburl = config_get_web_url();
     size_t weburl_len = strlen(weburl);
     size_t path_len = strlen(path);
@@ -106,6 +106,9 @@ const char * http_perform(const char* path, const char* postfields)
 
 const char * http_post(const char* path, const char* postfields)
 {
+    curl_easy_reset(curl);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
+
     if (postfields == NULL)
         curl_easy_setopt(curl, CURLOPT_POST, 1);
     return http_perform(path, postfields);
