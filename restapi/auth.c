@@ -61,6 +61,7 @@ restapi_login(const char* username, const char* password)
         http_add_header("X-User-Id", userId->valuestring);
         http_add_header("X-Auth-Token", authToken->valuestring);
         http_add_header("Content-type", "application/json");
+        http_add_header("Expect", "");
     } else {
         const cJSON* msg = cJSON_GetObjectItemCaseSensitive(json, "message");
         if (cJSON_IsString(msg) && msg->valuestring != NULL)
