@@ -109,8 +109,10 @@ const char * http_post(const char* path, const char* postfields)
     curl_easy_reset(curl);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &writeCallback);
 
-    if (postfields == NULL)
-        curl_easy_setopt(curl, CURLOPT_POST, 1);
+    if (postfields == NULL) {
+        curl_easy_setopt(curl, CURLOPT_POST, 1L);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, 0L);
+    }
     return http_perform(path, postfields);
 }
 
