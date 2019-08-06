@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <termios.h>
-#include <unistd.h>
 
 #include "common/config.h"
+#include "common/cli.h"
 #include "common/util.h"
 #include "restapi/auth.h"
 #include "restapi/im.h"
@@ -22,40 +21,12 @@ int main(void)
     }
 
     const char* login = config_get_login();
-    char* termlogin = NULL;
-    if (login == NULL) {
-        size_t len = 0;
-        printf("Login: ");
-        ssize_t read = getline(&termlogin, &len, stdin);
-        if (read > 1) termlogin[read-1] = 0;
-        login = termlogin;
-    }
+    if (login == NULL)
+        login = common_cli_get_login();
 
     const char* password = config_get_password();
-    char* termpassword = NULL;
-    if (password == NULL) {
-        struct termios oflags, nflags;
-        tcgetattr(fileno(stdin), &oflags);
-        nflags = oflags;
-        nflags.c_lflag &= ~ECHO;
-        nflags.c_lflag |= ECHONL;
-
-        if (tcsetattr(fileno(stdin), TCSADRAIN, &nflags) != 0) {
-            perror("tcsetattr");
-            return -1;
-        }
-
-        size_t len = 0;
-        printf("Password: ");
-        size_t read = getline(&termpassword, &len, stdin);
-        if (read > 1) termpassword[read-1] = 0;
-
-        if (tcsetattr(fileno(stdin), TCSANOW, &oflags) != 0) {
-            perror("tcsetattr");
-            return -1;
-        }
-        password = termpassword;
-    }
+    if (password == NULL)
+        password = common_cli_get_password();
 
     if (restapi_login(login, password) == 0) {
         struct subscription* subscriptions = restapi_subscriptions_get();
@@ -84,8 +55,7 @@ int main(void)
 
     restapi_logout();
     config_clean();
-    free(termlogin);
-    free(termpassword);
+    common_cli_free();
 
     return 0;
 }
