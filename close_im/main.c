@@ -14,31 +14,40 @@ int main(void)
         return 1;
     }
 
-    char* login = NULL;
-    size_t len = 0;
-    printf("Login: ");
-    ssize_t read = getline(&login, &len, stdin);
-    if (read > 1) login[read-1] = 0;
-
-    struct termios oflags, nflags;
-    tcgetattr(fileno(stdin), &oflags);
-    nflags = oflags;
-    nflags.c_lflag &= ~ECHO;
-    nflags.c_lflag |= ECHONL;
-
-    if (tcsetattr(fileno(stdin), TCSADRAIN, &nflags) != 0) {
-        perror("tcsetattr");
-        return -1;
+    const char* login = config_get_login();
+    char* termlogin = NULL;
+    if (login == NULL) {
+        size_t len = 0;
+        printf("Login: ");
+        ssize_t read = getline(&termlogin, &len, stdin);
+        if (read > 1) termlogin[read-1] = 0;
+        login = termlogin;
     }
 
-    char* password = NULL;
-    printf("Password: ");
-    read = getline(&password, &len, stdin);
-    if (read > 1) password[read-1] = 0;
+    const char* password = config_get_password();
+    char* termpassword = NULL;
+    if (password == NULL) {
+        struct termios oflags, nflags;
+        tcgetattr(fileno(stdin), &oflags);
+        nflags = oflags;
+        nflags.c_lflag &= ~ECHO;
+        nflags.c_lflag |= ECHONL;
 
-    if (tcsetattr(fileno(stdin), TCSANOW, &oflags) != 0) {
-        perror("tcsetattr");
-        return -1;
+        if (tcsetattr(fileno(stdin), TCSADRAIN, &nflags) != 0) {
+            perror("tcsetattr");
+            return -1;
+        }
+
+        size_t len = 0;
+        printf("Password: ");
+        size_t read = getline(&termpassword, &len, stdin);
+        if (read > 1) termpassword[read-1] = 0;
+
+        if (tcsetattr(fileno(stdin), TCSANOW, &oflags) != 0) {
+            perror("tcsetattr");
+            return -1;
+        }
+        password = termpassword;
     }
 
     if (restapi_login(login, password) == 0) {
@@ -62,8 +71,8 @@ int main(void)
 
     restapi_logout();
     config_clean();
-    free(login);
-    free(password);
+    free(termlogin);
+    free(termpassword);
 
     return 0;
 }
