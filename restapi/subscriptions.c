@@ -41,8 +41,9 @@ restapi_subscriptions_get(void)
             const cJSON* name = cJSON_GetObjectItemCaseSensitive(update, "name");
             const cJSON* type = cJSON_GetObjectItemCaseSensitive(update, "t");
             const cJSON* open = cJSON_GetObjectItemCaseSensitive(update, "open");
+            const cJSON* unread = cJSON_GetObjectItemCaseSensitive(update, "unread");
             enum subscription_type etype;
-            if (!cJSON_IsString(id) || id->valuestring == NULL || !cJSON_IsString(name) || name->valuestring == NULL || !cJSON_IsString(type) || type->valuestring == NULL || !cJSON_IsTrue(open))
+            if (!cJSON_IsString(id) || id->valuestring == NULL || !cJSON_IsString(name) || name->valuestring == NULL || !cJSON_IsString(type) || type->valuestring == NULL || !cJSON_IsTrue(open) || !cJSON_IsNumber(unread))
                 continue;
             if (strcmp(type->valuestring, "c") == 0)
                 etype = SUBSCRIPTION_CHANNEL;
@@ -54,7 +55,7 @@ restapi_subscriptions_get(void)
                 fprintf(stderr, "Bug found : Unknown subscription type %s\n%s\n", type->valuestring, buffer);
                 exit(999);
             }
-            common_subscription_add(&subscriptions, id->valuestring, name->valuestring, etype);
+            common_subscription_add(&subscriptions, id->valuestring, name->valuestring, etype, unread->valueint);
         }
     }
 get_json_cleanup:

@@ -1,12 +1,12 @@
 #include "subscriptions.h"
 
-void common_subscription_add(struct subscription** subscriptions, const char* id, const char* name, enum subscription_type type)
+void common_subscription_add(struct subscription** subscriptions, const char* id, const char* name, enum subscription_type type, size_t unread)
 {
-    struct subscription * subscription = common_subscription_new(id, name, type);
+    struct subscription * subscription = common_subscription_new(id, name, type, unread);
     HASH_ADD_KEYPTR(hh, *subscriptions, subscription->id, strlen(id), subscription);
 }
 
-struct subscription* common_subscription_new(const char* id, const char* name, enum subscription_type type)
+struct subscription* common_subscription_new(const char* id, const char* name, enum subscription_type type, size_t unread)
 {
     struct subscription* subscription = malloc(sizeof(struct subscription));
     subscription->id = malloc(strlen(id) + 1);
@@ -14,6 +14,7 @@ struct subscription* common_subscription_new(const char* id, const char* name, e
     subscription->name = malloc(strlen(name) + 1);
     strcpy(subscription->name, name);
     subscription->type = type;
+    subscription->unread = unread;
     return subscription;
 }
 
