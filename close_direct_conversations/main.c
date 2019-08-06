@@ -28,7 +28,7 @@ int main(void)
     if (password == NULL)
         password = common_cli_get_password();
 
-    if (restapi_login(login, password) == 0) {
+    if (restapi_login(login, password) != NULL) {
         struct subscription* subscriptions = restapi_subscriptions_get();
 
         printf("Active direct conversations :\n");
