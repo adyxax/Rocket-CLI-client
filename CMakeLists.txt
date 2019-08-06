@@ -41,7 +41,10 @@ ExternalProject_Add(cjson
     )
 include_directories(${CMAKE_BINARY_DIR}/cjson/src)
 
+### uthash library #####
+include_directories("${PROJECT_SOURCE_DIR}/external/uthash/src")
+
 ### Project subdirectories #####
-add_subdirectory(close_im)
+add_subdirectory(close_direct_conversations)
 add_subdirectory(common)
 add_subdirectory(restapi)
