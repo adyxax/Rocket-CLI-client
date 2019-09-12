@@ -13,12 +13,17 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-SET (CMAKE_C_COMPILER "clang")
-set(CMAKE_C_FLAGS "-Wall -Werror -Wextra -pedantic -D_XOPEN_SOURCE=10000 -D_XOPEN_SOURCE_EXTENDED")
+set(CMAKE_C_COMPILER "clang")
+set(CMAKE_C_FLAGS "-Wall -Werror -Wextra -pedantic -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=10000 -D_XOPEN_SOURCE_EXTENDED -Wno-variadic-macros")
 set(CMAKE_C_FLAGS_DEBUG "-O0 -g -ggdb -pg -fsanitize=address")
 set(CMAKE_C_FLAGS_RELEASE "-O2")
 set(CMAKE_C_FLAGS_MinSizeRel "-Os")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO "-O2 -g -ggdb -pg -fsanitize=address")
+
+option(DEBUG_WEBSOCKETS "whether or not to print all incoming and outgoing websocket communications" OFF)
+if(DEBUG_WEBSOCKETS)
+    add_definitions(-DDEBUG_WEBSOCKETS)
+endif()
 
 execute_process(COMMAND git rev-parse HEAD RESULT_VARIABLE GIT_HASH_RESULT
     OUTPUT_VARIABLE GIT_HASH_FULL)
@@ -47,4 +52,6 @@ include_directories("${PROJECT_SOURCE_DIR}/external/uthash/src")
 ### Project subdirectories #####
 add_subdirectory(close_direct_conversations)
 add_subdirectory(common)
+add_subdirectory(liveapi)
+add_subdirectory(maar)
 add_subdirectory(restapi)
