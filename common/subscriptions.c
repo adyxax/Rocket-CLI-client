@@ -38,3 +38,8 @@ void common_subscriptions_const_walk(const struct subscription* subscriptions, v
         func(sub);
     }
 }
+
+size_t common_subscriptions_count(const struct subscription* subscriptions)
+{
+    return HASH_COUNT(subscriptions);
+}

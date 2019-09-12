@@ -25,5 +25,6 @@ void common_subscription_add(struct subscription** subscriptions, const char* id
 struct subscription* common_subscription_new(const char* rid, const char* name, enum subscription_type type, size_t unread);
 void common_subscriptions_free(struct subscription* subscriptions);
 void common_subscriptions_const_walk(const struct subscription* subscriptions, void (*func)(const struct subscription*));
+size_t common_subscriptions_count(const struct subscription* subscriptions);
 
 #endif
