@@ -10,7 +10,7 @@
 #define USER_STR "user="
 #define PASS_STR "&password="
 
-char * authToken = NULL;
+static char * authToken = NULL;
 
 const char * // returns authToken if ok, NULL otherwise
 restapi_login(const char* username, const char* password)
