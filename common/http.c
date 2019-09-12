@@ -90,7 +90,6 @@ const char * http_perform(const char* path, const char* postfields)
     strcpy(url, weburl);
     strcpy(url + weburl_len, path);
     curl_easy_setopt(curl, CURLOPT_URL, url);
-    free(url);
     if (postfields != NULL)
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, postfields);
     if (headers != NULL)
@@ -98,8 +97,10 @@ const char * http_perform(const char* path, const char* postfields)
     CURLcode res = curl_easy_perform(curl);
     if(res != CURLE_OK) {
         fprintf(stderr, "HTTP get to %s failed: %s\n", url, curl_easy_strerror(res));
+        free(url);
         return NULL;
     }
+    free(url);
 
     return buffer;
 }

@@ -48,12 +48,13 @@ int main(void)
             }
             restapi_im_close(buff);
             free(buff);
+
+            restapi_logout();
         }
     } else {
         printf("Couldn't init rest api.\n");
     }
 
-    restapi_logout();
     config_clean();
     common_cli_free();
 
