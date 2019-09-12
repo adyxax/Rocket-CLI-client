@@ -37,13 +37,13 @@ restapi_subscriptions_get(void)
         }
         const cJSON* update = NULL;
         cJSON_ArrayForEach(update, updates) {
-            const cJSON* id = cJSON_GetObjectItemCaseSensitive(update, "_id");
+            const cJSON* rid = cJSON_GetObjectItemCaseSensitive(update, "rid");
             const cJSON* name = cJSON_GetObjectItemCaseSensitive(update, "name");
             const cJSON* type = cJSON_GetObjectItemCaseSensitive(update, "t");
             const cJSON* open = cJSON_GetObjectItemCaseSensitive(update, "open");
             const cJSON* unread = cJSON_GetObjectItemCaseSensitive(update, "unread");
             enum subscription_type etype;
-            if (!cJSON_IsString(id) || id->valuestring == NULL || !cJSON_IsString(name) || name->valuestring == NULL || !cJSON_IsString(type) || type->valuestring == NULL || !cJSON_IsTrue(open) || !cJSON_IsNumber(unread))
+            if (!cJSON_IsString(rid) || rid->valuestring == NULL || !cJSON_IsString(name) || name->valuestring == NULL || !cJSON_IsString(type) || type->valuestring == NULL || !cJSON_IsTrue(open) || !cJSON_IsNumber(unread))
                 continue;
             if (strcmp(type->valuestring, "c") == 0)
                 etype = SUBSCRIPTION_CHANNEL;
@@ -55,7 +55,7 @@ restapi_subscriptions_get(void)
                 fprintf(stderr, "Bug found : Unknown subscription type %s\n%s\n", type->valuestring, buffer);
                 exit(999);
             }
-            common_subscription_add(&subscriptions, id->valuestring, name->valuestring, etype, unread->valueint);
+            common_subscription_add(&subscriptions, rid->valuestring, name->valuestring, etype, unread->valueint);
         }
     }
 get_json_cleanup:
