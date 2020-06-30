@@ -3,10 +3,6 @@
 
 #include <uthash.h>
 
-static const char *subscription_type_str[] = {
-    "channel", "direct", "private",
-};
-
 enum subscription_type {
     SUBSCRIPTION_CHANNEL,
     SUBSCRIPTION_DIRECT,
