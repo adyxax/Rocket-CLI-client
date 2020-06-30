@@ -8,7 +8,6 @@
 #include "liveapi/messages.h"
 #include "restapi/auth.h"
 #include "restapi/subscriptions.h"
-#include "restapi/users.h"
 
 void maar_subscription(const struct subscription* subscription)
 {
