@@ -55,6 +55,8 @@ login = "test";
 password = "test";
 ```
 
+Only the web and websocket urls are mandatory. If the login and password are omitted you will be prompted for those.
+
 ## Usage
 
 ### rocket_close_direct_conversations
