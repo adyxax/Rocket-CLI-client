@@ -14,11 +14,12 @@ struct subscription {
     char* name;
     enum subscription_type type;
     size_t unread;
+    char alert;
     UT_hash_handle hh;
 };
 
-void common_subscription_add(struct subscription** subscriptions, const char* id, const char* name, enum subscription_type type, size_t unread);
-struct subscription* common_subscription_new(const char* rid, const char* name, enum subscription_type type, size_t unread);
+void common_subscription_add(struct subscription** subscriptions, const char* id, const char* name, enum subscription_type type, size_t unread, char alert);
+struct subscription* common_subscription_new(const char* rid, const char* name, enum subscription_type type, size_t unread, char alert);
 void common_subscriptions_free(struct subscription* subscriptions);
 void common_subscriptions_const_walk(const struct subscription* subscriptions, void (*func)(const struct subscription*));
 size_t common_subscriptions_count(const struct subscription* subscriptions);

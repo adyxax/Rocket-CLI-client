@@ -11,7 +11,7 @@
 
 void maar_subscription(const struct subscription* subscription)
 {
-    if (subscription->unread >0) {
+    if (subscription->unread >0 || subscription->alert) {
         printf("%s\n", subscription->name);
         liveapi_mark_read(subscription->rid);
         liveapi_step();
